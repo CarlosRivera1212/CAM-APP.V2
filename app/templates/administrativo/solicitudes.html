@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% block header %}Solicitudes{% endblock %} {% block content %}
+<div class="container">
+    <div class="row mt-1">
+        {% for s in list_solic %}
+        <!-- <p>{{ s }}</p> -->
+        {% if s[11] == 'propuesto' %}
+        <div class="card text-dark bg-light mb-3 w-100">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <h6 class="card-title">Solicitud #{{ s[0] }}</h6>
+                </div>
+                <div class="col-auto">
+                    <h6 class="card-title">Estado: {{ s[11] }}</h6>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <p class="m-0">
+                            Grupo Solicitante: <strong>{{ s[13] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Actividad Relaciona: <strong>{{ s[14] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Fecha Solicitud: <strong>{{ s[3] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Costo total: <strong>$ {{ s[7] }}</strong>
+                        </p>
+                    </div>
+                    <div class="col-7">
+                        <p class="m-0">Justificación: {{ s[8] }}</p>
+                        <p class="m-0">
+                            Productos: <strong>{{ s[4] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Cantidad: <strong>{{ s[5] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Docente: <strong>{{ s[10] }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- RESPONDER SOLICITUD -->
+            {% if session.user_rol in [0,1,2] %}
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_ressolic{{ s[0] }}">
+                                    Responder Solicitud
+                                </button>
+            </div>
+            {% include 'administrativo/responder_solicitud.html' %}
+            <!--  -->
+            {% endif %}
+        </div>
+        {% endif %}
+        <!--  -->
+        {% endfor %}
+        <hr>
+        <!--  -->
+        {% for s in list_solic %}
+        <!-- <p>{{ s }}</p> -->
+        {% if s[11] != 'propuesto' %} {% if s[11] == 'aprobado' %}
+        <!--  -->
+        {% set tc = 'success' %}
+        <!--  -->
+        {% else %}
+        <!--  -->
+        {% set tc = 'danger' %}
+        <!--  -->
+        {% endif %}
+        <div class="card border-{{tc}} mb-3 w-100">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <h6 class="card-title">Solicitud #{{ s[0] }}</h6>
+                </div>
+                <div class="col-auto">
+                    <h6 class="card-title">Estado: {{ s[11] }}</h6>
+                </div>
+            </div>
+            <!--  -->
+            <div class="card-body text-{{tc}}">
+                <div class="row">
+                    <div class="col-5">
+                        <p class="m-0">
+                            Grupo Solicitante: <strong>{{ s[13] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Actividad Relaciona: <strong>{{ s[14] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Fecha Solicitud: <strong>{{ s[3] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Costo total: <strong>$ {{ s[7] }}</strong>
+                        </p>
+                    </div>
+                    <div class="col-7">
+                        <p class="m-0">Justificación: {{ s[8] }}</p>
+                        <p class="m-0">
+                            Productos: <strong>{{ s[4] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Cantidad: <strong>{{ s[5] }}</strong>
+                        </p>
+                        <p class="m-0">
+                            Docente: <strong>{{ s[10] }}</strong>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <p><strong>Observación: </strong>{{s[12]}}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %} {% endfor %}
+    </div>
+</div>
+{% endblock %}

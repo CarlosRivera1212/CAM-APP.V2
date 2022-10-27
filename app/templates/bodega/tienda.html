@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block header %}Inventario en bodega{% endblock %}
+<!--  -->
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- LEFT-SIDEBAR -->
+        <div class="col-4">
+            <div class="d-grid gap-2 m-3">
+                {% if session.user_rol in [0,1,2] %}
+                <!-- Modal Producto -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_prod">
+                            Nuevo Producto
+                        </button> {% include 'bodega/nuevo_producto.html' %}
+                <!-- Modal Compra -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_compra">
+                            Nueva Compra
+                        </button> {% include 'bodega/nuevo_compra.html' %}
+                <!--  -->
+                {% endif %}
+                <a class="btn btn-primary" href="{{ url_for('bodega.solicitar_producto') }}">Solicitar/Reportar Producto</a>
+            </div>
+            <!-- CART -->
+            <div class="card">
+                <h5 class="card-title text-center">Productos seleccionados</h5>
+                {% if session['cart'] %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col-1">
+                                <!-- <a href="{{ url_for('bodega.tienda', idc=0) }}"><i class="fa-solid fa-trash"></i></a> -->
+                                <form action="" method="get">
+                                    <input type="hidden" id="idc" name="idc" value="-1" />
+                                    <button type="submit" class="btn btn-primary m-0 p-0">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                </form>
+                                <!-- <a href="tienda/0"><i class="fa-solid fa-trash"></i></a> -->
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for psi_id in session['cart'] %}
+                        <tr>
+                            {% set psi = session['cart'][psi_id] %}
+                            <td>{{ psi['prod'][2] }} ({{ psi['cant'] }} {{ psi['prod'][4] }}):</td>
+                            <td>$ {{ psi['prec'] }}</td>
+                            <td>
+                                <!-- <a href="{{ url_for('bodega.tienda', idc=psi['id']) }}"><i class="fa-solid fa-xmark"></i></a>
+                                <a href="tienda/{{ psi['id'] }}"><i class="fa-solid fa-xmark"></i></a> -->
+                                <form action="" method="get">
+                                    <input type="hidden" id="idc" name="idc" value="{{ psi['id'] }}" />
+                                    <button type="submit" class="btn m-0 p-0">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+                <hr/>
+                <div class="card-footer">
+                    <h4>TOTAL: $ {{ session['cart_tot'] }}</h4>
+                </div>
+            </div>
+        </div>
+        <!-- MAIN CONTENT -->
+        <div class="col-8 text-center m-0 p-0">
+            <div class="row m-0 p-0">
+                {% for p in list_prod %}
+                <!-- <p>{{p}}</p> -->
+                {% if p[9] == "SI" %}
+                <div class="card text-dark bg-light m-1 p-0" style="width: 15rem">
+                    <div class="card-body p-1">
+                        <h5 class="card-title">
+                            <div class="row">
+                                <div class="col-9">{{ p[2] }}</div>
+                                {% if session.user_rol in [0,1,2] %}
+                                <div class="col-3">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#model_delet_item{{ p[0] }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                </div>
+                                <!-- Modal ELIMINAR PRODUCTO -->
+                                <div class="modal fade" id="model_delet_item{{ p[0] }}" tabindex="-1" aria-labelledby="eml" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6 class="modal-title" id="eml">Borrar Producto: {{ p[0] }} - {{ p[2] }}</h6>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <form action="" method="post">
+                                                    <input type="hidden" id="prod_id" name="prod_id" value="{{ p[0] }}" />
+                                                    <input type="hidden" id="prod" name="prod" value="{{ p[2] }}" />
+                                                    <button type="submit" class="btn btn-primary" name="act" value="item_del">Borrar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ p[1] }} - {{ p[3] }}</h6>
+                        <p class="card-text">
+                            <strong>$ {{ p[6] }}</strong> x {{ p[4] }} (Disp: {{ p[5] }} {{ p[4] }})
+                        </p>
+                        <hr />
+                    </div>
+                    <div class="card-footer p-1">
+                        <form method="post">
+                            <div class="input-group">
+                                <span class="input-group-text p-1" id="basic-addon1">Cantidad</span>
+                                <input type="number" class="form-control" name="cant" min="0" max="{{ p[5] }}" step="0.001" required/>
+                                <input type="hidden" name="prod_id" value="{{ p[0] }}" />
+                                <button type="submit" class="btn btn-outline-secondary p-1" name="act" value="item">Comprar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endif %} {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

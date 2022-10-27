@@ -1,0 +1,119 @@
+{% extends 'base.html' %} {% block header %}Cronograma de Actividades{% endblock %} {% block content %}
+<div class="container m-0 p-0">
+    <div class="row">
+        <div class="col-3">
+            <div class="d-grid gap-2 m-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_activ">
+                        Programar Actividad
+                    </button>
+            </div>
+            <!-- Modal Actividad -->
+            {% include 'administrativo/nuevo_actividad.html' %}
+        </div>
+        <!-- LISTADO ACTIVIDADES -->
+        <div class="col-9 m-0 p-0">
+            <div class="row m-0 p-0">
+                {% for a in list_activ %}
+                <!-- ACTIVIDADES PENDIENTES -->
+                {% if a[10] == 'pendiente' %}
+                <!-- <p>{{a}}</p> -->
+                <div class="card text-dark bg-light mt-1">
+                    <h5 class="card-header">
+                        <!-- Button trigger modal -->
+                        {% if session['user_rol'] in [0, 1] %}
+                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#model_delet_item{{ a[0] }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                        <!--  -->
+                        {% endif %}
+                        <!--  -->
+                        {{ a[11] }} - {{ a[2] }} - <span class="bg-warning">{{ a[4] }}</span>
+                        <div class="modal fade" id="model_delet_item{{ a[0] }}" tabindex="-1" aria-labelledby="eml" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title" id="eml">Borrar Actividad: {{ a[0] }} - {{ a[2] }}</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <form action="" method="post">
+                                            <input type="hidden" id="id_act" name="id_act" value="{{ a[0] }}" />
+                                            <button type="submit" class="btn btn-primary" name="act" value="item_del">Borrar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-9">
+                                <p class="card-text fw-bold"># Solicitudes: {{ a[12] }}</p>
+                                <p class="card-text">Descripción: {{ a[3] }}</p>
+                            </div>
+                            <div class="col-3">
+                                <p class="card-text">Duración Estimada: {{ a[5] }}</p>
+                                <p class="card-text">Costo Estimado: ${{ a[6] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        {% if session['user_id'] == a[1] or session['user_rol'] in [0] %}
+                        <!-- Modal Nueva Solicitud -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nsolic{{ a[0] }}">
+                                            Agregar Solicitud
+                                        </button>
+                        <!-- modal_nsolic -->
+                        {% include 'administrativo/nueva_solicitud.html' %}
+                        <!--  -->
+                        {% endif %}
+                        <!-- Modal Actividad Realizada -->
+                        {% if session['user_rol'] in [0,1,2] %}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_actreal{{ a[0] }}">
+                                            Actividad Relaizada
+                                        </button> {% include 'administrativo/actividad_realizada.html' %}
+                        <!--  -->
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                <!--  -->
+                {% endfor %}
+                <!-- ACTIVIDADES REALIZADAS -->
+                {% for a in list_activ %}
+                <!--  -->
+                {% if a[10] == 'realizado' %}
+                <!-- <p>{{a}}</p> -->
+                <div class="card text-dark bg-light m-1">
+                    <h5 class="card-header">{{ a[11] }} - {{ a[2] }} - Relaizado</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="card-title">Descripción: {{ a[3] }}</h6>
+                                <!-- <p class="card-text">Insumos: {{ a[4] }}</p> -->
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="card-text m-0 p-0">Fecha Programada: {{ a[4] }}</p>
+                                <p class="card-text m-0 p-0">Duración Estimada: {{ a[5] }}</p>
+                                <p class="card-text m-0 p-0">Costo Estimado: ${{ a[6] }}</p>
+                            </div>
+                            <div class="col-6">
+                                <p class="card-text m-0 p-0">Fecha Ejecutada: {{ a[7] }}</p>
+                                <p class="card-text m-0 p-0">Duración Ejecutado: {{ a[8] }}</p>
+                                <p class="card-text m-0 p-0">Costo Ejecutado: ${{ a[9] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <!--  -->
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

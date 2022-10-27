@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block header %}Registrar Nuevo Usuario{% endblock %}
+<!--  -->
+{% block content %}
+<div class="container w-100">
+    <div class="row justify-content-center p-3">
+        <div class="card" style="width: 21rem;">
+            <h5 class="card-header m-1">Registrar Nuevo Usuario</h5>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="username" id="username" placeholder="." required/>
+                        <label for="username">Usuario</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" name="year" id="year" min="2020" placeholder="." required/>
+                        <label for="year">Año</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="semester" id="semester" aria-label=".">
+                <option value="1">
+                  Primer Semestre
+                </option>
+                <option value="2">
+                  Segundo Semestre
+                </option>
+              </select>
+                        <label for="semester">Perido/Semestre</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="." required/>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="role" id="role" aria-label=".">
+                {% if session['user_rol'] == 0 %}
+                  <option value="0">
+                    SuperAdmin
+                  </option>
+                {% endif %}
+                {% if session['user_rol'] <= 1 %}
+                  <option value="1">
+                    Admin/Docente
+                  </option>
+                {% endif %}
+                {% if session['user_rol'] <= 2 %}
+                  <option value="2">
+                    Supervisor/Monitor
+                  </option>
+                {% endif %}
+                <option value="3">
+                  Grupo/Cultivo
+                </option>
+              </select>
+                        <label for="role">Role</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

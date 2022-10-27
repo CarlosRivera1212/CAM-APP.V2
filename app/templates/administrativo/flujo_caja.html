@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block header %}Flujo de Caja{% endblock %} {% block content %}
+<!-- <img class="img-fluid" src="{{ url_for('static', filename='img/sec_const.jpg') }}" alt="..."/> -->
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Actividad</th>
+                <th scope="col">Fecha Programada</th>
+                <th scope="col">Fecha Realizada</th>
+                <th scope="col">Costo Activdad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fci in list_fc %}
+            <tr>
+                <th scope="row">{{ fci[0] }}</th>
+                <td>{{ fci[6] }}</td>
+                <td>{{ fci[7] }}</td>
+                <td>{{ fci[3] }}</td>
+                <td>{{ fci[4] }}</td>
+                <td>{{ fci[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

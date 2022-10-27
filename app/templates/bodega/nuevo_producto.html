@@ -1,0 +1,67 @@
+<div class="modal fade" id="modal_prod" tabindex="-1" aria-labelledby="modal_prodLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_prodLabel">Crear Nuevo Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="categoria" class="col-sm-3 col-form-label">Categoria</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" name="categoria" id="categoria" required>
+                                {% for cp_i in categ_prod %}
+                                <option value="{{cp_i}}">
+                                    {{cp_i}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="producto" class="col-sm-3 col-form-label">Producto</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="producto" id="producto" required/>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="descrip" class="col-sm-3 col-form-label">Descripción</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" name="descrip" id="descrip" required></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="unidad" class="col-sm-3 col-form-label">Unidad</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" name="unidad" id="unidad" required>
+                                <option value="KG">
+                                    Kilogramo
+                                </option>
+                                <option value="L">
+                                    Litro
+                                </option>
+                                <option value="H">
+                                    Hora
+                                </option>
+                                <option value="U">
+                                    Unidad
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="ubicacion" class="col-sm-3 col-form-label">Ubicacion</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ubicacion" id="ubicacion" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" name="act" value="np">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

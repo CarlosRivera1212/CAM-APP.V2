@@ -1,0 +1,28 @@
+<!-- modal_ressolic -->
+<div class="modal fade" id="modal_ressolic{{ s[0] }}" tabindex="-1" aria-labelledby="modal_Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_Label">Responder Solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <p>
+                        <sup>Solicitud: {{ s[0] }}</sup>
+                    </p>
+                    <label for="observa" class="form-label">Observaciones a la Solicitud</label>
+                    <textarea class="form-control mb-1" name="observa" id="observa" rows="3" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="solic_prod" value="{{ s[4] }}" />
+                    <input type="hidden" name="solic_cant" value="{{ s[5] }}" />
+                    <input type="hidden" name="solic_id" value="{{ s[0] }}" />
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
+                    <button type="submit" class="btn btn-danger" name="act" value="recha_solic">Rechazar</button>
+                    <button type="submit" class="btn btn-success" name="act" value="aprob_solic">Arpobar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

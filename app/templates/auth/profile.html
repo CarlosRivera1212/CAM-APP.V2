@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block header %}Perfil{% endblock %} {% block content %}
+<div class="container w-100">
+    <div class="row">
+        <div class="col">
+            <h4>
+                <strong>Nombre Usuario:</strong> {{ session.user_name }}
+            </h4>
+        </div>
+    </div>
+    <hr>
+    <form method="post">
+        <div class="row p-3">
+            <h4>Cambiar Contraseña</h4>
+            <div class="col-4">
+                <label for="pass_curr" class="form-label">Contraseña Actual</label>
+                <input type="password" class="form-control" name="pass_curr" id="pass_curr" required>
+            </div>
+            <div class="col-4">
+                <label for="pass_new1" class="form-label">Escribir Contraseña Nueva</label>
+                <input type="password" class="form-control" name="pass_new1" id="pass_new1" required>
+            </div>
+            <div class="col-4">
+                <label for="pass_new2" class="form-label">Repetir Contraseña Nueva</label>
+                <input type="password" class="form-control" name="pass_new2" id="pass_new2" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" name="act" value="cam_psw">Cambiar Contraseña</button>
+    </form>
+    <hr> {% if session['user_rol'] != 3 %}
+    <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Crear Nuevo Usuario</a> {% endif %}
+    <hr> {% if session['user_rol'] in [0,1] %}
+    <form method="post">
+        <div class="row p-3">
+            <h4>Desactivar Usuario</h4>
+            <div class="mb-3 row">
+                <label for="categoria" class="col-3 col-form-label">Usuario</label>
+                <div class="col-6">
+                    <select class="form-select" name="user_des" id="user_des" required>
+                        {% for usri in list_usr %}
+                            <option value="{{ usri[0] }}">
+                                {{ usri[1] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary" name="act" value="des">Desactivar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

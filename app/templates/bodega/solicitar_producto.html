@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block header %}Inventario en bodega{% endblock %}
+<!--  -->
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- COLUMNA SOLICITAR PRODUCTO -->
+        <div class="col-6">
+            <div class="border border-primary p-1 m-1">
+                <form method="post">
+                    <h4>Solicitar nuevo producto</h4>
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <select class="form-select" name="categoria" id="categoria" required>
+                            {% for cp_i in categ_prod %}
+                                <option value="{{ cp_i }}">
+                                    {{ cp_i }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    <label for="nomb_prod" class="form-label">Nombre producto</label>
+                    <input type="text" class="form-control" name="nomb_prod" id="nomb_prod" required>
+                    <label for="desc_prod" class="form-label">
+                            Descrición de la solicitud (nombre comercial, presentación, cantidad, ingrediente activo, etc...)
+                        </label>
+                    <textarea class="form-control mb-1" name="desc_prod" id="desc_prod" rows="3" required></textarea>
+                    <button type="submit" class="btn btn-primary" name="act" value="snp">Solicitar</button>
+                </form>
+            </div>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Ok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lp in list_prov %} {% if lp[1] == 'snp' %}
+                    <tr>
+                        <th scope="row">{{ lp[0] }}</th>
+                        <td>{{ lp[2] }}</td>
+                        <td>{{ lp[3] }}</td>
+                        <td>{{ lp[4] }}</td>
+                        <td>
+                            {% if session.user_rol in [0,1,2] %}
+                            <form method="get">
+                                <input type="hidden" id="id_prov" name="id_prov" value="{{ lp[0] }}" />
+                                <button type="submit" class="btn m-0 p-0">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %} {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- COLUMNA REPORTAR -->
+        <div class="col-6 p-1">
+            <div class="border border-primary p-1 m-1">
+                <form method="post">
+                    <h4>Reporte de daño</h4>
+                    <label for="nomb_prod" class="form-label">Producto</label>
+                    <select class="form-select" name="nomb_prod" id="nomb_prod" required>
+                            {% for p_i in list_prod %}
+                                <option value="{{ p_i[2] }}">
+                                    {{ p_i[2] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    <label for="desc_prod" class="form-label">Descrición del daño</label>
+                    <textarea class="form-control mb-1" name="desc_prod" id="desc_prod" rows="3" required></textarea>
+                    <button type="submit" class="btn btn-primary" name="act" value="rdp">Reportar</button>
+                </form>
+            </div>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Ok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lp in list_prov %} {% if lp[1] == 'rdp' %}
+                    <tr>
+                        <th scope="row">{{ lp[0] }}</th>
+                        <td>{{ lp[2] }}</td>
+                        <td>{{ lp[3] }}</td>
+                        <td>
+                            {% if session.user_rol in [0,1,2] %}
+                            <form method="get">
+                                <input type="hidden" id="id_prov" name="id_prov" value="{{ lp[0] }}" />
+                                <button type="submit" class="btn m-0 p-0">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %} {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<hr>
+<!--  -->
+{% endblock %}

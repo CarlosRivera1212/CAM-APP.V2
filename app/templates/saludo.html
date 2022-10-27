@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block header %}CAM-APP <strong>{V-2.2}</strong>{% endblock %}
+<!--  -->
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center m-3">
+        <div class="card text-white bg-primary m-3 p-0" style="width: 21rem;">
+            <img class="img-thumbnail m-2" src="{{ url_for('static', filename='img/unlogo.jpg') }}" alt="...">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong>Objetivo:</strong> Desarrollar e implementar una aplicación web que permita la administración de los recursos para la ejecución de proyectos productivos agrícolas en el marco de la asignatura Ciclo II por los estudiantes de
+                    Ingeniería agronómica de la facultad de Ciencias Agrarias en el Centro Agropecuario Marengo de la Universidad Nacional de Colombia - Sede Bogotá.
+                </p>
+            </div>
+        </div>
+        <div class="card text-white bg-primary m-3 p-0" style="width: 21rem;">
+            <!-- <img class="img-thumbnail m-2"
+      src="{{ url_for('static', filename='img/name_fca_bog.jpg') }}"
+      alt="..."> -->
+            <img class="img-thumbnail m-2" src="{{ url_for('static', filename='img/name_fca_bog_2.jpg') }}" alt="...">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong>Estudiante</strong>: <i>Carlos Armando Rivera</i>
+                </p>
+                <p class="card-text">
+                    <strong>Director</strong>: <i>Aquiles Enrique Darghan</i>
+                </p>
+                <p class="card-text">
+                    <strong>Co-Director</strong>: <i>Guido Armando Plaza</i>
+                </p>
+            </div>
+        </div>
+        <div class="card text-white bg-primary m-3 p-0" style="width: 21rem;">
+            <img class="img-thumbnail transparent m-2" src="{{ app_logo }}" alt="...">
+            <div class="card-body">
+                <h5>Enviar Comentarios</h5>
+                <p>
+                    <a class="btn btn-success" href="https://chat.whatsapp.com/LFpG88aa4TjAMAP2h5FQEb" target="_blank">Grupo Whatsapp</a>
+                </p>
+                <p>
+                    <a class="btn btn-success" href="mailto:caariveramo@unal.edu.co" target="_blank">Enviar Correo</a>
+                </p>
+                {% if not session.user_login %}
+                <p>
+                    <a class="btn btn-success" href="{{ url_for('auth.login') }}">Ingresar</a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

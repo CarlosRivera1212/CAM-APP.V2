@@ -1,0 +1,79 @@
+<!-- modal_nsolic -->
+<div class="modal fade" id="modal_nsolic{{a[0]}}" tabindex="-1" aria-labelledby="modal_Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_Label">Registrar Nueva Solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {% if session.cart|length > 0 %}
+            <form method="post">
+                <div class="modal-body">
+                    <p><sup>Actividad: {{ a[0] }}</sup></p>
+                    <div class="mb-3 row">
+                        <label for="grupo" class="col-sm-4 col-form-label">Grupo</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="grupo" id="grupo" value="{{ session.user_name }}" readonly required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="fecsol" class="col-sm-4 col-form-label">Fecha Solicitud</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" name="fecsol" id="fecsol" value="{{ hoy }}" readonly required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productos" class="col-sm-4 col-form-label">Productos</label>
+                        <div class="col-sm-8">
+                            {% for c in session['cart'] %}
+                            <!--  -->
+                            {% set p = session['cart'][c] %}
+                            <!-- <p>{{p}}</p> -->
+                            <p class="m-0">{{p.prod[2]}} - {{p.cant}}{{p.prod[4]}} - ${{p.prec}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="costo_productos" class="col-sm-4 col-form-label">Costo Productos</label>
+                        <div class="col-sm-8">
+                            <p>$ {{session['cart_tot']}}</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="justif" class="col-sm-4 col-form-label">Justificación</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" name="justif" id="justif" required></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="evid" class="col-sm-4 col-form-label">Evidencia Discusión</label>
+                        <div class="col-sm-8">
+                            <input type="file" class="form-control" name="evid" id="evid" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="docente" class="col-sm-4 col-form-label">Docente Discusión</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="docente" id="docente" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="activ_id" value="{{ a[0] }}" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" name="act" value="ns">Solicitar</button>
+                </div>
+            </form>
+            {% else %}
+            <div class="modal-body">
+                <h5>NO TIENE NINGUN PRODUCTO SELECCIONADO</h5>
+                <h6><a href="{{ url_for('bodega.tienda') }}">Ir a Bodega para seleccionar productos</a></h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
