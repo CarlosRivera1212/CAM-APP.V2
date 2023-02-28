@@ -15,14 +15,6 @@ from static import schema
 
 def get_db():
     if 'db' not in g:
-        # g.db = psycopg2.connect(
-        #     host=current_app.config['DATABASE_HOST'],
-        #     port=current_app.config['DATABASE_PORT'],
-        #     user=current_app.config['DATABASE_USER'],
-        #     password=current_app.config['DATABASE_PASSWORD'],
-        #     database=current_app.config['DATABASE']
-        # )
-        # g.c = g.db.cursor()
         g.db = sqlite3.connect('static/db_camapp.db')
         g.c = g.db.cursor()
 

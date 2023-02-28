@@ -4,16 +4,16 @@
 crear_tablas = {
     # role: 0=superadmin, 1=admin, 2=auxiliar, 3=group
     'tabla_user': [
-      'DROP TABLE IF EXISTS "usuario";',
-      
-      '''CREATE TABLE "usuario" (
-	"id"	INTEGER,
-	"username"	TEXT NOT NULL UNIQUE,
-	"password"	TEXT NOT NULL,
-	"role"	INTEGER NOT NULL DEFAULT 3,
-	"activo"	BOOLEAN NOT NULL DEFAULT TRUE,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);'''
+    'DROP TABLE IF EXISTS "usuario";',
+    
+    '''CREATE TABLE "usuario" (
+      "id"	INTEGER,
+      "username"	TEXT NOT NULL UNIQUE,
+      "password"	TEXT NOT NULL,
+      "role"	INTEGER NOT NULL DEFAULT 3,
+      "activo"	BOOLEAN NOT NULL DEFAULT TRUE,
+      PRIMARY KEY("id" AUTOINCREMENT)
+      );'''
     ],
     'tabla_productos': [
       'DROP TABLE IF EXISTS "producto";',
