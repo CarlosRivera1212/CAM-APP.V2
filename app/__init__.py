@@ -6,11 +6,11 @@ def create_app():
 
     app.config.from_mapping(
         SECRET_KEY='mi_secret_key',
-        DATABASE_HOST='ec2-3-224-184-9.compute-1.amazonaws.com',
+        DATABASE_HOST='34.30.163.119',
         DATABASE_PORT='5432',
-        DATABASE_USER='fujztluotutykd',
-        DATABASE_PASSWORD='f59705db149d9f0bebea3db84396a8cce3b303f7d3729d2cb4d6ef5950c74690',
-        DATABASE='d2fvcanrcarno2'
+        DATABASE='postgres',
+        DATABASE_USER='postgres',
+        DATABASE_PASSWORD='pass_postgres'
     )
 
     # Postgres pass root: PostgresSQL_pass
