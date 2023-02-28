@@ -4,8 +4,8 @@ from flask import (
     current_app
 )
 
-from . import db
-from . import auth
+from routes import db
+from routes import auth
 
 bp = Blueprint('bodega', __name__, url_prefix='/bodega')
 

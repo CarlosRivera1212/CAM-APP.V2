@@ -6,8 +6,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import pandas as pd
 from datetime import date
 
-from . import db
-from . import auth
+from routes import db
+from routes import auth
 
 bp = Blueprint('administrativo', __name__, url_prefix='/administrativo')
 

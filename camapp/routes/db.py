@@ -4,8 +4,7 @@ from flask import redirect, url_for, current_app, g, session
 from flask.cli import with_appcontext
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from .static import schema
-
+from static import schema
 ############################################################
 ############################################################
 # INICIAR DB
