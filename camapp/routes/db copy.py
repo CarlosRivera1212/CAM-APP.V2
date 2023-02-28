@@ -65,7 +65,7 @@ def init_app(app):
 def db_login(usr, pwd):
     db, c = get_db()
     msm = None
-    c.execute('SELECT * FROM "usuario" WHERE username = ?', (usr,))
+    c.execute('SELECT * FROM "usuario" WHERE username = %s', (usr,))
     user = c.fetchone()
     if user is None:
         msm = 'Usuario y/o contraseña invalidos'
@@ -84,12 +84,12 @@ def db_login(usr, pwd):
 def db_register(usr, pwd, rol):
     db, c = get_db()
     msm = None
-    c.execute('SELECT * FROM "usuario" WHERE username = ?', (usr,))
+    c.execute('SELECT * FROM "usuario" WHERE username = %s', (usr,))
     if not c.fetchone() is None:
         msm = f'Usuario {usr} ya se encuentra registrado'
     else:
         c.execute(
-            'INSERT INTO "usuario" (username, password, role) VALUES (?, ?, ?);',
+            'INSERT INTO "usuario" (username, password, role) VALUES (%s, %s, %s);',
             (usr, generate_password_hash(pwd), rol)
         )
         db.commit()
@@ -99,7 +99,7 @@ def db_register(usr, pwd, rol):
 def db_update_pass(usr, old_pwd, new_pwd):
     db, c = get_db()
     msm = None
-    c.execute('SELECT * FROM "usuario" WHERE username = ?', (usr,))
+    c.execute('SELECT * FROM "usuario" WHERE username = %s', (usr,))
     user = c.fetchone()
     
     if not check_password_hash(user[2], old_pwd):
@@ -108,8 +108,8 @@ def db_update_pass(usr, old_pwd, new_pwd):
     else:
         c.execute(
             '''UPDATE "usuario"
-            SET password = ?
-            WHERE username=?;''',
+            SET password = %s
+            WHERE username=%s;''',
             (generate_password_hash(new_pwd), usr)
         )
         db.commit()
@@ -131,7 +131,7 @@ def db_update_activo(id_usr):
     c.execute(
         '''UPDATE usuario
         SET activo = FALSE
-        WHERE id = ?''',
+        WHERE id = %s''',
         (id_usr,)
     )
     db.commit()
@@ -150,7 +150,7 @@ def db_del_prod(id_prod, prod):
 
     c.execute(
         '''DELETE FROM producto
-        WHERE id = ?;''',
+        WHERE id = %s;''',
         (id_prod,)
     )
     db.commit()
@@ -173,7 +173,7 @@ def db_load_prod():
 def db_nuevo_producto(cat, pro, des, und, ubi):
     db, c = get_db()
     msm = None
-    c.execute('SELECT * FROM "producto" WHERE producto = ?', (pro,))
+    c.execute('SELECT * FROM "producto" WHERE producto = %s', (pro,))
     if not c.fetchone() is None:
         msm = f'Producto {pro} ya se encuentra registrado'
     else:
@@ -182,7 +182,7 @@ def db_nuevo_producto(cat, pro, des, und, ubi):
             (categoria, producto, descrip, unidad,
             cantidad_disp, valor_unid, ubicacion,
             fecha_vencimiento, disponible)
-            VALUES(?,?,?,?,0,0,?,?,?);''',
+            VALUES(%s,%s,%s,%s,0,0,%s,%s,%s);''',
             (cat, pro, des, und, ubi, 2022, 'NO')
         )
         db.commit()
@@ -197,7 +197,7 @@ def db_nueva_compra(pro, fch, fch_venc, und, cant, vc_tot, vc_und, vv_und):
         '''INSERT INTO "compra"
         (producto, fecha_compra, unidad, cantidad_compra,
         valor_compra, valor_unidad, valor_venta)
-        VALUES(?,?,?,?,?,?,?);''',
+        VALUES(%s,%s,%s,%s,%s,%s,%s);''',
         (pro, fch, und, cant,
         vc_tot, vc_und, vv_und)
     )
@@ -216,28 +216,28 @@ def db_nueva_compra(pro, fch, fch_venc, und, cant, vc_tot, vc_und, vv_und):
 def db_update_cant_producto(prod=None, cant=None, val=None, fven=None, tipo=None):
     db, c = get_db()
 
-    c.execute('SELECT cantidad_disp FROM "producto" WHERE producto = ?;', (prod,))
+    c.execute('SELECT cantidad_disp FROM "producto" WHERE producto = %s;', (prod,))
     pre_cant = c.fetchone()[0]
 
     if tipo == 'compra':
         c.execute(
             '''UPDATE "producto"
-            SET cantidad_disp = ?, valor_unid = ?, fecha_vencimiento = ?, disponible = ?
-            WHERE producto=?;''',
+            SET cantidad_disp = %s, valor_unid = %s, fecha_vencimiento = %s, disponible = %s
+            WHERE producto=%s;''',
             (pre_cant+cant, val, fven, 'SI', prod)
         )
     elif tipo == 'solic':
         c.execute(
             '''UPDATE "producto"
-            SET cantidad_disp = ?
-            WHERE producto=?;''',
+            SET cantidad_disp = %s
+            WHERE producto=%s;''',
             (pre_cant-cant, prod)
         )
     elif tipo == 'solic_rech':
         c.execute(
             '''UPDATE "producto"
-            SET cantidad_disp = ?
-            WHERE producto=?;''',
+            SET cantidad_disp = %s
+            WHERE producto=%s;''',
             (pre_cant+cant, prod)
         )
 
@@ -252,7 +252,7 @@ def db_tienda_provi(tipo, campos=None):
         c.execute(
             '''INSERT INTO provicional
             (tipo, c1, c2, c3)
-            VALUES(?,?,?,?);''',
+            VALUES(%s,%s,%s,%s);''',
             (tipo,) + campos
         )
         db.commit()
@@ -263,14 +263,14 @@ def db_tienda_provi(tipo, campos=None):
         c.execute(
             '''INSERT INTO provicional
             (tipo, c1, c2)
-            VALUES(?,?,?);''',
+            VALUES(%s,%s,%s);''',
             (tipo,) + campos
         )
         db.commit()
         c.execute(
             '''UPDATE "producto"
-            SET disponible = ?
-            WHERE producto=?;''',
+            SET disponible = %s
+            WHERE producto=%s;''',
             ('NO', campos[0])
         )
         db.commit()
@@ -286,7 +286,7 @@ def db_del_tienda_provi(id):
     
     c.execute(
         '''DELETE FROM provicional
-        WHERE id = ?;''',
+        WHERE id = %s;''',
         (id,)
     )
     db.commit()
@@ -314,7 +314,7 @@ def db_del_activ(id_act):
 
     c.execute(
         '''DELETE FROM cronograma
-        WHERE id = ?;''',
+        WHERE id = %s;''',
         (id_act,)
     )
     db.commit()
@@ -338,7 +338,7 @@ def db_load_activ():
             FROM "cronograma" AS c
             LEFT JOIN "usuario" AS u
             ON c.id_usuario = u.id
-            WHERE c.id_usuario = ?
+            WHERE c.id_usuario = %s
             ORDER BY c.fecha_progra;''',
             (idgrp,)
         )
@@ -369,7 +369,7 @@ def db_nueva_actividad(id_grp, act, des, fec_p, tmp_p, cos_p, est):
         fecha_progra, tiemp_progra, costo_progra,
         fecha_ejec, tiemp_ejec, costo_ejec,
         estado)
-        VALUES(?,?,?,?,?,?,?,?,?,?);''',
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
         (id_grp, act, des, 
         fec_p, tmp_p, cos_p,
         fec_p, tmp_p, cos_p, est)
@@ -385,15 +385,15 @@ def db_update_actividad(id_act, fec_e, tmp_e, est):
     c.execute(
         '''SELECT SUM(valor_tot)
         FROM solicitud
-        WHERE id_activ = ?;''',
+        WHERE id_activ = %s;''',
         (id_act,)
     )
     val_tot = float(c.fetchone()[0])
     
     c.execute(
         '''UPDATE "cronograma"
-        SET fecha_ejec = ?, tiemp_ejec = ?, costo_ejec = ?, estado = ?
-        WHERE id=?;''',
+        SET fecha_ejec = %s, tiemp_ejec = %s, costo_ejec = %s, estado = %s
+        WHERE id=%s;''',
         (fec_e, tmp_e, val_tot, est, id_act)
     )
     db.commit()
@@ -414,7 +414,7 @@ def db_update_venta(idu, ida, fec_v):
     
     c.execute(
         '''SELECT * from solicitud
-        WHERE id_activ = ?;''',
+        WHERE id_activ = %s;''',
         (ida,)
     )
     lsolic = c.fetchall()
@@ -430,7 +430,7 @@ def db_update_venta(idu, ida, fec_v):
                 '''INSERT INTO "venta"
                 (producto, id_usuario, id_solic, fecha_venta,
                 cantidad_venta, unidad_venta, valor_venta)
-                VALUES(?,?,?,?,?,?,?);''',
+                VALUES(%s,%s,%s,%s,%s,%s,%s);''',
                 (pi, idu, ids, fec_v, ci, unid_v, vi)
             )
             db.commit()
@@ -447,7 +447,7 @@ def db_update_flujoc(idu, ida, fec_prog, fec_ejec):
     c.execute(
         '''SELECT SUM(valor_tot)
         FROM solicitud
-        WHERE id_activ = ?;''',
+        WHERE id_activ = %s;''',
         (ida,)
     )
     cost_ejec = c.fetchone()[0]
@@ -456,7 +456,7 @@ def db_update_flujoc(idu, ida, fec_prog, fec_ejec):
         '''INSERT INTO "flujoc"
         (id_usuario, id_actividad,
         fecha_progra, fecha_ejec, costo_ejec)
-        VALUES(?,?,?,?,?);''',
+        VALUES(%s,%s,%s,%s,%s);''',
         (idu, ida, fec_prog, fec_ejec, cost_ejec)
     )
     db.commit()
@@ -477,7 +477,7 @@ def df_load_flujoc():
             ON f.id_usuario=u.id
             LEFT JOIN cronograma AS c
             ON f.id_actividad=c.id
-            WHERE f.id_usuario = ?
+            WHERE f.id_usuario = %s
             ORDER BY f.fecha_ejec;''',
             (idgrp,)
         )
@@ -516,7 +516,7 @@ def db_load_solic():
             ON s.id_usuario = u.id
             LEFT JOIN "cronograma" AS c
             ON s.id_activ = c.id
-            WHERE s.id_usuario = ?
+            WHERE s.id_usuario = %s
             ORDER BY fecha_solic;''',
             (idgrp,)
         )
@@ -544,7 +544,7 @@ def db_nueva_solicitud(idgrp, idact, fecsol, prod, cant, prod_id, val, valtot, j
         (id_usuario, id_activ, fecha_solic,
         productos, cantidad, valor, valor_tot,
         justificacion, evidencia, docente, estado)
-        VALUES(?,?,?,?,?,?,?,?,?,?,?);''',
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
         (idgrp, idact, fecsol, prod, cant, val, valtot, just, evi, doc, est)
     )
     db.commit()
@@ -567,8 +567,8 @@ def db_update_solic(solic_id, solic_obs, estado, prod=None, cant=None):
     
     c.execute(
             '''UPDATE "solicitud"
-            SET obser = ?, estado = ?
-            WHERE id=?;''',
+            SET obser = %s, estado = %s
+            WHERE id=%s;''',
             (solic_obs, estado, solic_id)
         )
     db.commit()

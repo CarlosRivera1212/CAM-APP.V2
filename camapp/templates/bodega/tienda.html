@@ -35,9 +35,7 @@
                                 <!-- <a href="{{ url_for('bodega.tienda', idc=0) }}"><i class="fa-solid fa-trash"></i></a> -->
                                 <form action="" method="get">
                                     <input type="hidden" id="idc" name="idc" value="-1" />
-                                    <button type="submit" class="btn btn-primary m-0 p-0">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
+                                    <button type="submit" class="btn btn-primary">X</button>
                                 </form>
                                 <!-- <a href="tienda/0"><i class="fa-solid fa-trash"></i></a> -->
                             </th>
@@ -54,9 +52,7 @@
                                 <a href="tienda/{{ psi['id'] }}"><i class="fa-solid fa-xmark"></i></a> -->
                                 <form action="" method="get">
                                     <input type="hidden" id="idc" name="idc" value="{{ psi['id'] }}" />
-                                    <button type="submit" class="btn m-0 p-0">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
+                                    <button type="submit" class="btn p-0">X</button>
                                 </form>
                             </td>
                         </tr>
@@ -85,8 +81,8 @@
                                 <div class="col-3">
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#model_delet_item{{ p[0] }}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
+                                        X
+                                    </button>
                                 </div>
                                 <!-- Modal ELIMINAR PRODUCTO -->
                                 <div class="modal fade" id="model_delet_item{{ p[0] }}" tabindex="-1" aria-labelledby="eml" aria-hidden="true">

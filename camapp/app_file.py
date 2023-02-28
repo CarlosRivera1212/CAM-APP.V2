@@ -5,12 +5,16 @@ app = Flask(__name__)
 
 app.config.from_mapping(
     SECRET_KEY='mi_secret_key',
-    DATABASE_HOST='34.30.163.119',
-    DATABASE_PORT='5432',
-    DATABASE='postgres',
-    DATABASE_USER='postgres',
-    DATABASE_PASSWORD='pass_postgres'
 )
+
+# app.config.from_mapping(
+#     SECRET_KEY='mi_secret_key',
+#     DATABASE_HOST='34.30.163.119',
+#     DATABASE_PORT='5432',
+#     DATABASE='postgres',
+#     DATABASE_USER='postgres',
+#     DATABASE_PASSWORD='pass_postgres'
+# )
 
 # Postgres pass root: PostgresSQL_pass
 # app.config.from_mapping(
